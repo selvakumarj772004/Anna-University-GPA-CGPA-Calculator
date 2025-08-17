@@ -5,334 +5,324 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anna University GPA & CGPA Calculator</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #87CEEB, #4682B4, #6495ED);
+      background: linear-gradient(135deg, #87CEEB 0%, #4682B4 50%, #6495ED 100%);
       min-height: 100vh;
       padding: 15px;
-      animation: skyFlow 10s ease-in-out infinite;
-    }
-
-    @keyframes skyFlow {
-      0%, 100% { background: linear-gradient(135deg, #87CEEB, #4682B4, #6495ED); }
-      33% { background: linear-gradient(135deg, #87CEFA, #00BFFF, #1E90FF); }
-      66% { background: linear-gradient(135deg, #B0E0E6, #5F9EA0, #4169E1); }
     }
 
     .container {
       max-width: 1200px;
-      margin: auto;
+      margin: 0 auto;
       background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(15px);
       border-radius: 20px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
       overflow: hidden;
+      padding-bottom: 20px;
     }
 
     .header {
-      background: linear-gradient(135deg, #4682B4, #1E90FF);
-      padding: 30px;
+      background: linear-gradient(135deg, #4682B4 0%, #1E90FF 100%);
+      padding: 20px;
       text-align: center;
       color: white;
-      position: sticky;
-      top: 0;
-      z-index: 10;
     }
 
-    .header h1 { font-size: 2.5em; font-weight: 800; margin-bottom: 8px; }
-    .header p { font-size: 1.1em; opacity: 0.9; }
+    .header h1 {
+      font-size: 2em;
+      margin-bottom: 5px;
+      font-weight: 800;
+    }
+
+    .header p {
+      font-size: 1em;
+      opacity: 0.95;
+    }
 
     .cgpa-display {
-      background: rgba(255,255,255,0.2);
-      padding: 10px 20px;
-      border-radius: 50px;
-      margin-top: 15px;
-      font-size: 1em;
-      font-weight: bold;
+      margin-top: 10px;
+      padding: 10px 15px;
+      border-radius: 30px;
+      font-size: 0.9em;
+      font-weight: 700;
       display: none;
+      background: rgba(255, 255, 255, 0.2);
     }
 
-    .main-content { padding: 25px; }
+    .main-content {
+      padding: 20px;
+    }
 
     .controls {
       display: flex;
       justify-content: center;
       gap: 15px;
-      margin-bottom: 25px;
       flex-wrap: wrap;
+      margin-bottom: 20px;
     }
 
     .btn {
-      background: linear-gradient(135deg, #4682B4, #1E90FF);
+      flex: 1 1 auto;
+      min-width: 150px;
+      background: linear-gradient(135deg, #4682B4 0%, #1E90FF 100%);
       color: white;
       border: none;
-      padding: 12px 22px;
-      border-radius: 50px;
+      padding: 12px;
+      border-radius: 30px;
       cursor: pointer;
       font-size: 15px;
-      font-weight: 600;
-      transition: 0.3s ease;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      text-align: center;
     }
 
-    .btn:hover { transform: translateY(-3px); opacity: 0.95; }
-    .btn-success { background: linear-gradient(135deg, #87CEFA, #4682B4); }
-    .btn-danger { background: linear-gradient(135deg, #FF6B6B, #FF8E8E); }
+    .btn:hover {
+      opacity: 0.9;
+    }
 
     .semester-card {
-      background: #fff;
+      background: white;
       border-radius: 15px;
-      padding: 20px;
+      padding: 15px;
       margin-bottom: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     }
 
     .semester-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #eee;
-      padding-bottom: 10px;
-      margin-bottom: 15px;
       flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 10px;
     }
 
-    .semester-title { font-size: 1.5em; font-weight: 700; }
+    .semester-title {
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+
     .semester-gpa {
-      background: linear-gradient(135deg, #87CEFA, #4682B4);
+      background: linear-gradient(135deg, #87CEFA 0%, #4682B4 100%);
       color: white;
-      padding: 8px 15px;
+      padding: 8px 12px;
       border-radius: 20px;
-      font-size: 0.95em;
-      min-width: 140px;
-      text-align: center;
+      font-size: 0.9em;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
     }
 
     .course-table {
       width: 100%;
+      min-width: 500px; /* forces horizontal scroll on small screens */
       border-collapse: collapse;
       margin-bottom: 15px;
     }
 
     .course-table th, .course-table td {
-      border: 1px solid #f0f0f0;
       padding: 10px;
       text-align: center;
-      font-size: 14px;
-    }
-
-    .course-table th {
-      background: #1E90FF;
-      color: white;
-      font-size: 14px;
+      border-bottom: 1px solid #eee;
     }
 
     .course-name-input, .course-input, .grade-select {
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 14px;
       width: 100%;
+      max-width: 120px;
+      padding: 6px;
+      font-size: 14px;
     }
 
     .credit-controls {
       display: flex;
+      justify-content: center;
       align-items: center;
       gap: 6px;
-      justify-content: center;
     }
 
     .credit-btn {
       background: #1E90FF;
       color: white;
       border: none;
-      width: 30px;
-      height: 30px;
       border-radius: 50%;
+      width: 28px;
+      height: 28px;
       font-size: 16px;
       cursor: pointer;
     }
 
     .cgpa-result {
       text-align: center;
-      padding: 20px;
-      background: linear-gradient(135deg, #4682B4, #1E90FF);
+      margin-top: 20px;
+      padding: 15px;
+      background: linear-gradient(135deg, #4682B4 0%, #1E90FF 100%);
       color: white;
       border-radius: 15px;
-      font-size: 1.3em;
-      font-weight: bold;
-      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: 700;
     }
 
-    .footer {
-      text-align: center;
-      padding: 15px;
-      margin-top: 20px;
-      font-size: 14px;
-      color: #4682B4;
-    }
-    .footer .heart { color: #FF6B6B; }
-
-    /* Responsive */
+    /* Mobile optimization */
     @media (max-width: 768px) {
-      .header h1 { font-size: 1.8em; }
-      .btn { width: 100%; max-width: 250px; }
-      .semester-header { flex-direction: column; gap: 10px; }
-      .course-table th, .course-table td { font-size: 12px; padding: 8px; }
+      .header h1 {
+        font-size: 1.6em;
+      }
+      .header p {
+        font-size: 0.9em;
+      }
+      .semester-title {
+        font-size: 1.2em;
+      }
+      .btn {
+        min-width: 120px;
+        font-size: 14px;
+        padding: 10px;
+      }
+      .semester-card {
+        padding: 10px;
+      }
     }
 
     @media (max-width: 480px) {
-      .header h1 { font-size: 1.5em; }
-      .semester-title { font-size: 1.2em; }
-      .cgpa-result { font-size: 1.1em; padding: 15px; }
-      .course-table { font-size: 12px; }
+      .header h1 {
+        font-size: 1.4em;
+      }
+      .cgpa-result {
+        font-size: 1em;
+      }
+      .course-table {
+        font-size: 12px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>🎓 Anna University</h1>
-      <p>GPA & CGPA Calculator</p>
-      <div class="cgpa-display" id="headerCGPA">
-        🎯 Overall CGPA: Not calculated yet
-      </div>
+      <h1>Anna University GPA & CGPA Calculator</h1>
+      <p>Calculate your Semester GPA and Overall CGPA Easily</p>
+      <div id="cgpa-display" class="cgpa-display"></div>
     </div>
 
     <div class="main-content">
       <div class="controls">
-        <button class="btn" onclick="addSemester()">➕ Add Semester</button>
-        <button class="btn btn-success" onclick="calculateCGPA()">📊 Calculate CGPA</button>
+        <button class="btn" onclick="addSemester()">Add Semester</button>
+        <button class="btn" onclick="calculateCGPA()">Calculate CGPA</button>
       </div>
-
-      <div id="semesters">
-        <div class="empty-state" style="text-align:center; padding:40px; color:#666;">
-          <div style="font-size:3em;">📚</div>
-          <p>No semesters added yet. Click "Add Semester" to start!</p>
-        </div>
-      </div>
-
-      <div class="cgpa-result" id="cgpaResult" style="display:none;"></div>
+      <div id="semesters"></div>
+      <div id="cgpa-result" class="cgpa-result" style="display: none;"></div>
     </div>
   </div>
 
-  <div class="footer">
-    <p>© 2025 Made with <span class="heart">❤️</span> by <b>Selvakumar</b></p>
-    <p>Aspiring Software Developer & Full Stack Web Developer in Java</p>
-  </div>
+  <script>
+    let semesterCount = 0;
 
-<script>
-  let semesterCount = 0;
-  const gradePoints = { "O":10, "A+":9, "A":8, "B+":7, "B":6, "C":5 };
+    function addSemester() {
+      semesterCount++;
+      const semestersDiv = document.getElementById("semesters");
 
-  function addSemester() {
-    const emptyState = document.querySelector('.empty-state');
-    if (emptyState) emptyState.remove();
-    semesterCount++;
-    const div = document.createElement("div");
-    div.className = "semester-card";
-    div.id = `semester-${semesterCount}`;
-    div.innerHTML = `
-      <div class="semester-header">
-        <h3 class="semester-title">📖 Semester ${semesterCount}</h3>
-        <div class="semester-gpa" id="gpaResult-${semesterCount}">GPA: Not calculated</div>
-      </div>
-      <table class="course-table" id="table-${semesterCount}">
-        <thead>
-          <tr><th>Course</th><th>Credits</th><th>Grade</th><th>Points</th><th>Action</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <div class="controls">
-        <button class="btn" onclick="addCourse(${semesterCount})">➕ Add Course</button>
-        <button class="btn btn-success" onclick="calculateGPA(${semesterCount})">📌 GPA</button>
-        <button class="btn btn-danger" onclick="removeSemester(${semesterCount})">🗑️ Remove</button>
-      </div>`;
-    document.getElementById("semesters").appendChild(div);
-    addCourse(semesterCount);
-    addCourse(semesterCount);
-  }
+      const semesterCard = document.createElement("div");
+      semesterCard.className = "semester-card";
+      semesterCard.innerHTML = `
+        <div class="semester-header">
+          <span class="semester-title">Semester ${semesterCount}</span>
+          <span id="gpa-sem${semesterCount}" class="semester-gpa">GPA: -</span>
+        </div>
+        <div class="table-wrapper">
+          <table class="course-table" id="sem${semesterCount}-table">
+            <thead>
+              <tr>
+                <th>Course</th>
+                <th>Credits</th>
+                <th>Grade</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <button class="btn" onclick="addCourse(${semesterCount})">Add Course</button>
+      `;
 
-  function addCourse(sem) {
-    const table = document.getElementById(`table-${sem}`).querySelector('tbody');
-    const row = table.insertRow();
-    const n = table.rows.length;
-    row.innerHTML = `
-      <td><input type="text" class="course-name-input" value="Course ${n}"></td>
-      <td><div class="credit-controls">
-        <button class="credit-btn" onclick="adjustCredit(this,-0.5,${sem})">−</button>
-        <input type="number" class="course-input" min="0.5" max="10" step="0.5" value="3" onchange="calculateGPA(${sem})">
-        <button class="credit-btn" onclick="adjustCredit(this,0.5,${sem})">+</button>
-      </div></td>
-      <td><select class="grade-select" onchange="updatePoints(this); calculateGPA(${sem})">
-        <option value="O">O</option><option value="A+">A+</option><option value="A">A</option>
-        <option value="B+">B+</option><option value="B">B</option><option value="C">C</option>
-      </select></td>
-      <td class="points-cell">10.0</td>
-      <td><button class="btn btn-danger" onclick="removeCourse(this,${sem})">❌</button></td>`;
-  }
-
-  function adjustCredit(btn, d, sem) {
-    const input = btn.parentNode.querySelector('.course-input');
-    let v = parseFloat(input.value) || 0;
-    v = Math.min(10, Math.max(0.5, v+d));
-    input.value = v;
-    calculateGPA(sem);
-  }
-
-  function updatePoints(sel) {
-    const grade = sel.value;
-    sel.closest('tr').querySelector('.points-cell').textContent = gradePoints[grade].toFixed(1);
-  }
-
-  function removeCourse(btn, sem) {
-    btn.closest('tr').remove();
-    calculateGPA(sem);
-  }
-
-  function removeSemester(sem) {
-    document.getElementById(`semester-${sem}`).remove();
-    calculateCGPA();
-  }
-
-  function calculateGPA(sem) {
-    const table = document.getElementById(`table-${sem}`).querySelector('tbody');
-    let total=0, credits=0;
-    for (let r of table.rows) {
-      const c = parseFloat(r.querySelector('.course-input').value) || 0;
-      const g = r.querySelector('.grade-select').value;
-      total += c * gradePoints[g]; credits += c;
+      semestersDiv.appendChild(semesterCard);
     }
-    const gpa = credits ? (total/credits) : 0;
-    const el = document.getElementById(`gpaResult-${sem}`);
-    el.textContent = credits ? `GPA: ${gpa.toFixed(2)} / 10.0` : "GPA: Add courses";
-    return { gpa, credits };
-  }
 
-  function calculateCGPA() {
-    let total=0, credits=0;
-    for (let i=1;i<=semesterCount;i++) {
-      const el = document.getElementById(`semester-${i}`);
-      if (el) {
-        const { gpa, credits:c } = calculateGPA(i);
-        total += gpa*c; credits += c;
+    function addCourse(semId) {
+      const tableBody = document.querySelector(`#sem${semId}-table tbody`);
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td><input type="text" class="course-name-input" placeholder="Course Name"></td>
+        <td>
+          <div class="credit-controls">
+            <button class="credit-btn" onclick="adjustCredits(this, -1)">-</button>
+            <input type="number" class="course-input" value="3" min="1" max="6" readonly>
+            <button class="credit-btn" onclick="adjustCredits(this, 1)">+</button>
+          </div>
+        </td>
+        <td>
+          <select class="grade-select">
+            <option value="">Select</option>
+            <option value="10">O</option>
+            <option value="9">A+</option>
+            <option value="8">A</option>
+            <option value="7">B+</option>
+            <option value="6">B</option>
+            <option value="0">U</option>
+          </select>
+        </td>
+        <td><button class="btn" style="padding:5px 10px;" onclick="this.closest('tr').remove()">Remove</button></td>
+      `;
+
+      tableBody.appendChild(row);
+    }
+
+    function adjustCredits(btn, change) {
+      const input = btn.parentElement.querySelector("input");
+      let value = parseInt(input.value) + change;
+      if (value >= 1 && value <= 6) {
+        input.value = value;
       }
     }
-    const cgpa = credits ? total/credits : 0;
-    const result = document.getElementById("cgpaResult");
-    const header = document.getElementById("headerCGPA");
-    if (!credits) {
-      result.textContent = "⚠️ Add semesters to calculate CGPA";
-      result.style.display = "block"; header.style.display="none"; return;
+
+    function calculateCGPA() {
+      let totalPoints = 0;
+      let totalCredits = 0;
+
+      for (let i = 1; i <= semesterCount; i++) {
+        const rows = document.querySelectorAll(`#sem${i}-table tbody tr`);
+        let semPoints = 0, semCredits = 0;
+
+        rows.forEach(row => {
+          const credits = parseInt(row.querySelector(".course-input").value);
+          const grade = parseInt(row.querySelector(".grade-select").value);
+
+          if (!isNaN(credits) && !isNaN(grade)) {
+            semPoints += credits * grade;
+            semCredits += credits;
+          }
+        });
+
+        const gpa = semCredits > 0 ? (semPoints / semCredits).toFixed(2) : "-";
+        document.getElementById(`gpa-sem${i}`).innerText = `GPA: ${gpa}`;
+
+        totalPoints += semPoints;
+        totalCredits += semCredits;
+      }
+
+      const cgpa = totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : "-";
+      document.getElementById("cgpa-result").style.display = "block";
+      document.getElementById("cgpa-result").innerText = `Your CGPA is: ${cgpa}`;
+      document.getElementById("cgpa-display").style.display = "inline-block";
+      document.getElementById("cgpa-display").innerText = `CGPA: ${cgpa}`;
     }
-    const perc = cgpa*10;
-    result.innerHTML = `🎯 <b>CGPA: ${cgpa.toFixed(2)} / 10.0</b><br>
-      <span style="font-size:0.9em;">Equivalent %: ${perc.toFixed(1)} | Total Credits: ${credits}</span>`;
-    result.style.display="block";
-    header.textContent = `🎯 Overall CGPA: ${cgpa.toFixed(2)} / 10.0 (${perc.toFixed(1)}%)`;
-    header.style.display="block";
-  }
-</script>
+  </script>
 </body>
 </html>
