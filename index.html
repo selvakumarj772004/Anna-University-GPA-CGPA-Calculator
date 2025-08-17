@@ -176,8 +176,6 @@
       margin-bottom: 25px;
       padding-bottom: 20px;
       border-bottom: 3px solid #f5f5f5;
-      flex-wrap: wrap;
-      gap: 15px;
     }
 
     .semester-title {
@@ -202,14 +200,8 @@
       border-collapse: collapse;
       margin-bottom: 25px;
       border-radius: 15px;
-      overflow-x: auto;
-      display: block;
+      overflow: hidden;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-    }
-
-    .course-table table {
-      width: 100%;
-      min-width: 600px;
     }
 
     .course-table th {
@@ -254,7 +246,6 @@
       align-items: center;
       justify-content: center;
       gap: 12px;
-      flex-wrap: nowrap;
     }
 
     .credit-btn {
@@ -372,62 +363,165 @@
       font-weight: 600;
     }
 
-    /* Responsive */
-    @media (max-width: 992px) {
-      .semester-title {
-        font-size: 1.6em;
-      }
-      .header h1 {
-        font-size: 2.3em;
-      }
-    }
-
+    /* Mobile Responsive */
     @media (max-width: 768px) {
       body {
-        padding: 10px;
+        padding: 5px;
+      }
+
+      .container {
+        border-radius: 15px;
+        margin-bottom: 15px;
+      }
+
+      .footer {
+        border-radius: 15px;
+        padding: 15px;
+        margin: 10px auto 0;
+      }
+
+      .footer p {
+        font-size: 14px;
+        line-height: 1.4;
       }
 
       .header {
-        padding: 25px 20px;
+        padding: 20px 15px;
       }
 
       .header h1 {
         font-size: 2em;
+        margin-bottom: 8px;
+      }
+      
+      .header p {
+        font-size: 1em;
+      }
+
+      .cgpa-display {
+        padding: 10px 15px;
+        font-size: 0.9em;
       }
       
       .main-content {
-        padding: 25px 20px;
+        padding: 20px 15px;
       }
 
+      .semester-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        align-items: stretch;
+      }
+
+      .semester-title {
+        font-size: 1.4em;
+      }
+
+      .semester-gpa {
+        min-width: unset;
+        width: 100%;
+        padding: 10px 15px;
+      }
+      
       .controls {
         flex-direction: column;
         align-items: center;
-        gap: 15px;
+        gap: 12px;
+        margin-bottom: 25px;
       }
 
       .btn {
         width: 100%;
         max-width: 280px;
         justify-content: center;
+        padding: 12px 24px;
+        font-size: 15px;
       }
-
-      .semester-header {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-      }
-
+      
+      /* Mobile table styling - Card layout */
       .course-table {
-        font-size: 14px;
+        display: none;
       }
 
-      .course-table th,
-      .course-table td {
-        padding: 12px 8px;
+      .mobile-course-list {
+        display: block;
       }
 
-      .course-name-input {
+      .mobile-course-item {
+        background: white;
+        border: 2px solid #f0f0f0;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .mobile-course-item:hover {
+        border-color: #4682B4;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .mobile-course-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .mobile-course-row:last-child {
+        margin-bottom: 0;
+      }
+
+      .mobile-course-label {
+        font-weight: 700;
+        color: #4682B4;
         font-size: 14px;
+        min-width: 70px;
+      }
+
+      .mobile-course-value {
+        flex: 1;
+        text-align: right;
+      }
+
+      .mobile-course-name {
+        margin-bottom: 15px;
+      }
+
+      .mobile-course-name .course-name-input {
+        font-size: 16px;
+        padding: 12px;
+      }
+
+      .mobile-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+      }
+
+      .grade-legend {
+        gap: 8px;
+        margin-bottom: 25px;
+      }
+
+      .grade-item {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+
+      .cgpa-result {
+        font-size: 1.2em;
+        padding: 20px 15px;
+      }
+
+      .semester-card {
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+
+      .credit-controls {
+        gap: 8px;
       }
 
       .credit-btn {
@@ -437,38 +531,52 @@
       }
 
       .course-input {
-        width: 70px;
+        width: 65px;
+        padding: 10px 6px;
         font-size: 15px;
       }
 
       .grade-select {
         font-size: 14px;
-        padding: 10px;
+        padding: 10px 12px;
+        min-width: 80px;
       }
 
-      .cgpa-result {
-        font-size: 1.3em;
-        padding: 25px 20px;
+      .points-cell {
+        font-size: 15px;
+        font-weight: 700;
+        color: #4682B4;
       }
     }
 
     @media (max-width: 480px) {
+      body {
+        padding: 3px;
+      }
+
       .header h1 {
-        font-size: 1.8em;
+        font-size: 1.7em;
       }
 
-      .course-table {
-        overflow-x: auto;
+      .header p {
+        font-size: 0.9em;
       }
 
-      .course-table th,
-      .course-table td {
-        padding: 10px 5px;
+      .main-content {
+        padding: 15px 10px;
       }
 
-      .course-input {
-        width: 60px;
-        font-size: 14px;
+      .semester-card {
+        padding: 12px;
+      }
+
+      .mobile-course-item {
+        padding: 15px;
+      }
+
+      .mobile-course-label {
+        font-size: 13px;
+        min-width: 65px;
       }
 
       .credit-btn {
@@ -477,14 +585,317 @@
         font-size: 16px;
       }
 
+      .course-input {
+        width: 60px;
+        font-size: 14px;
+      }
+
       .grade-select {
         font-size: 13px;
-        padding: 8px;
+        padding: 8px 10px;
+        min-width: 70px;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+
+      .grade-item {
+        padding: 6px 10px;
+        font-size: 11px;
+      }
+
+      .footer p {
+        font-size: 12px;
+      }
+    }
+
+    /* Desktop table display */
+    @media (min-width: 769px) {
+      .mobile-course-list {
+        display: none;
+      }
+      
+      .course-table {
+        display: table;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Your full HTML + Script remains same -->
-</body>
-</html>
+  <div class="container">
+    <div class="header">
+      <h1>🎓 Anna University</h1>
+      <p>GPA & CGPA Calculator</p>
+      <div class="cgpa-display" id="headerCGPA">
+        🎯 Overall CGPA: Not calculated yet
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="grade-legend">
+        <div class="grade-item">O: 10 Points</div>
+        <div class="grade-item">A+: 9 Points</div>
+        <div class="grade-item">A: 8 Points</div>
+        <div class="grade-item">B+: 7 Points</div>
+        <div class="grade-item">B: 6 Points</div>
+        <div class="grade-item">C: 5 Points</div>
+      </div>
+
+      <div class="controls">
+        <button class="btn btn-primary" onclick="addSemester()">
+          ➕ Add Semester
+        </button>
+        <button class="btn btn-success" onclick="calculateCGPA()">
+          📊 Calculate CGPA
+        </button>
+      </div>
+
+      <div id="semesters">
+        <div class="empty-state">
+          <div class="empty-state-icon">📚</div>
+          <div class="empty-state-text">No semesters added yet</div>
+          <p>Click "Add Semester" to get started!</p>
+        </div>
+      </div>
+
+      <div class="cgpa-result" id="cgpaResult" style="display: none;"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>© 2025 Made with <span class="heart">❤️</span> by <strong>Selvakumar</strong> | Anna University GPA | CGPA Calculator</p>
+    <p>Aspiring Software Developer & Full Stack Web Developer in Java</p>
+  </div>
+
+  <script>
+    let semesterCount = 0;
+
+    const gradePoints = {
+      "O": 10, "A+": 9, "A": 8,
+      "B+": 7, "B": 6, "C": 5
+    };
+
+    function addSemester() {
+      // Hide empty state
+      const emptyState = document.querySelector('.empty-state');
+      if (emptyState) {
+        emptyState.style.display = 'none';
+      }
+
+      semesterCount++;
+      const div = document.createElement("div");
+      div.className = "semester-card";
+      div.id = `semester-${semesterCount}`;
+      div.innerHTML = `
+        <div class="semester-header">
+          <h3 class="semester-title">📖 Semester ${semesterCount}</h3>
+          <div class="semester-gpa" id="gpaResult-${semesterCount}">GPA: Not calculated</div>
+        </div>
+        
+        <!-- Desktop Table View -->
+        <table class="course-table" id="table-${semesterCount}">
+          <thead>
+            <tr>
+              <th style="width: 35%;">Course Name</th>
+              <th style="width: 25%;">Credits</th>
+              <th style="width: 15%;">Grade</th>
+              <th style="width: 15%;">Points</th>
+              <th style="width: 10%;">Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <!-- Mobile Card View -->
+        <div class="mobile-course-list" id="mobile-list-${semesterCount}"></div>
+        
+        <div class="controls">
+          <button class="btn" onclick="addCourse(${semesterCount})">➕ Add Course</button>
+          <button class="btn btn-success" onclick="calculateGPA(${semesterCount})">📌 Calculate GPA</button>
+          <button class="btn btn-danger" onclick="removeSemester(${semesterCount})">🗑️ Remove Semester</button>
+        </div>
+      `;
+      document.getElementById("semesters").appendChild(div);
+      addCourse(semesterCount);
+      addCourse(semesterCount);
+    }
+
+    function addCourse(sem) {
+      // Add to desktop table
+      const table = document.getElementById(`table-${sem}`).getElementsByTagName('tbody')[0];
+      const row = table.insertRow();
+      const courseNumber = table.rows.length;
+      row.innerHTML = `
+        <td><input type="text" class="course-name-input" placeholder="Course ${courseNumber}" value="Course ${courseNumber}"></td>
+        <td>
+          <div class="credit-controls">
+            <button type="button" class="credit-btn" onclick="adjustCredit(this, -0.5, ${sem})">−</button>
+            <input type="number" class="course-input" min="0.5" max="10" step="0.5" value="3" onchange="calculateGPA(${sem})">
+            <button type="button" class="credit-btn" onclick="adjustCredit(this, 0.5, ${sem})">+</button>
+          </div>
+        </td>
+        <td>
+          <select class="grade-select" onchange="updatePoints(this); calculateGPA(${sem})">
+            <option value="O">O</option>
+            <option value="A+">A+</option>
+            <option value="A">A</option>
+            <option value="B+">B+</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+          </select>
+        </td>
+        <td class="points-cell">10.0</td>
+        <td><button class="btn btn-danger" onclick="removeCourse(this, ${sem})">❌</button></td>
+      `;
+
+      // Add to mobile list
+      const mobileList = document.getElementById(`mobile-list-${sem}`);
+      const mobileItem = document.createElement('div');
+      mobileItem.className = 'mobile-course-item';
+      mobileItem.innerHTML = `
+        <div class="mobile-course-name">
+          <input type="text" class="course-name-input" placeholder="Course ${courseNumber}" value="Course ${courseNumber}">
+        </div>
+        <div class="mobile-course-row">
+          <span class="mobile-course-label">Credits:</span>
+          <div class="mobile-course-value">
+            <div class="credit-controls">
+              <button type="button" class="credit-btn" onclick="adjustCreditMobile(this, -0.5, ${sem})">−</button>
+              <input type="number" class="course-input" min="0.5" max="10" step="0.5" value="3" onchange="calculateGPA(${sem})">
+              <button type="button" class="credit-btn" onclick="adjustCreditMobile(this, 0.5, ${sem})">+</button>
+            </div>
+          </div>
+        </div>
+        <div class="mobile-course-row">
+          <span class="mobile-course-label">Grade:</span>
+          <div class="mobile-course-value">
+            <select class="grade-select" onchange="updatePointsMobile(this); calculateGPA(${sem})">
+              <option value="O">O</option>
+              <option value="A+">A+</option>
+              <option value="A">A</option>
+              <option value="B+">B+</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+            </select>
+          </div>
+        </div>
+        <div class="mobile-course-row">
+          <span class="mobile-course-label">Points:</span>
+          <div class="mobile-course-value">
+            <span class="points-cell">10.0</span>
+          </div>
+        </div>
+        <div class="mobile-actions">
+          <button class="btn btn-danger" onclick="removeCourseMobile(this, ${sem})">❌ Remove</button>
+        </div>
+      `;
+      mobileList.appendChild(mobileItem);
+    }
+
+    function adjustCredit(button, adjustment, sem) {
+      const creditInput = button.parentNode.querySelector('.course-input');
+      adjustCreditValue(creditInput, adjustment, sem);
+    }
+
+    function adjustCreditMobile(button, adjustment, sem) {
+      const creditInput = button.parentNode.querySelector('.course-input');
+      adjustCreditValue(creditInput, adjustment, sem);
+    }
+
+    function adjustCreditValue(creditInput, adjustment, sem) {
+      let currentValue = parseFloat(creditInput.value) || 0;
+      let newValue = currentValue + adjustment;
+      
+      // Ensure value stays within bounds
+      if (newValue < 0.5) newValue = 0.5;
+      if (newValue > 10) newValue = 10;
+      
+      creditInput.value = newValue;
+      calculateGPA(sem);
+    }
+
+    function updatePoints(selectElement) {
+      const grade = selectElement.value;
+      const pointsCell = selectElement.closest('tr').querySelector('.points-cell');
+      pointsCell.textContent = gradePoints[grade].toFixed(1);
+    }
+
+    function updatePointsMobile(selectElement) {
+      const grade = selectElement.value;
+      const pointsCell = selectElement.closest('.mobile-course-item').querySelector('.points-cell');
+      pointsCell.textContent = gradePoints[grade].toFixed(1);
+    }
+
+    function removeCourse(button, sem) {
+      const row = button.closest('tr');
+      const rowIndex = row.rowIndex - 1; // Subtract 1 for header row
+      
+      // Remove from table
+      row.remove();
+      
+      // Remove corresponding mobile item
+      const mobileList = document.getElementById(`mobile-list-${sem}`);
+      const mobileItems = mobileList.children;
+      if (mobileItems[rowIndex]) {
+        mobileItems[rowIndex].remove();
+      }
+      
+      calculateGPA(sem);
+    }
+
+    function removeCourseMobile(button, sem) {
+      const mobileItem = button.closest('.mobile-course-item');
+      const mobileList = document.getElementById(`mobile-list-${sem}`);
+      const itemIndex = Array.from(mobileList.children).indexOf(mobileItem);
+      
+      // Remove mobile item
+      mobileItem.remove();
+      
+      // Remove corresponding table row
+      const table = document.getElementById(`table-${sem}`).getElementsByTagName('tbody')[0];
+      if (table.rows[itemIndex]) {
+        table.rows[itemIndex].remove();
+      }
+      
+      calculateGPA(sem);
+    }
+
+    function removeSemester(sem) {
+      if (confirm('Are you sure you want to remove this semester?')) {
+        document.getElementById(`semester-${sem}`).remove();
+        calculateCGPA();
+        
+        // Show empty state if no semesters left
+        const remainingSemesters = document.querySelectorAll('.semester-card');
+        if (remainingSemesters.length === 0) {
+          document.getElementById('semesters').innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">📚</div>
+              <div class="empty-state-text">No semesters added yet</div>
+              <p>Click "Add Semester" to get started!</p>
+            </div>
+          `;
+          document.getElementById('cgpaResult').style.display = 'none';
+          document.getElementById('headerCGPA').style.display = 'none';
+        }
+      }
+    }
+
+    function calculateGPA(sem) {
+      const table = document.getElementById(`table-${sem}`).getElementsByTagName('tbody')[0];
+      let totalPoints = 0, totalCredits = 0;
+
+      for (let i = 0; i < table.rows.length; i++) {
+        const row = table.rows[i];
+        const credits = parseFloat(row.cells[1].querySelector('.course-input').value) || 0;
+        const grade = row.cells[2].children[0].value;
+        totalPoints += credits * gradePoints[grade];
+        totalCredits += credits;
+      }
+
+      const gpa = totalCredits ? (totalPoints / totalCredits) : 0;
+      const gpaElement = document.getElementById(`gpaResult-${sem}`);
+      
+      if (totalCredits === 0)
