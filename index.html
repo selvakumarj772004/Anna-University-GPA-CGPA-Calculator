@@ -898,4 +898,67 @@
       const gpa = totalCredits ? (totalPoints / totalCredits) : 0;
       const gpaElement = document.getElementById(`gpaResult-${sem}`);
       
-      if (totalCredits === 0)
+      if (totalCredits === 0) {
+        gpaElement.textContent = 'GPA: Add courses first';
+        gpaElement.style.background = 'linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%)';
+      } else {
+        gpaElement.textContent = `GPA: ${gpa.toFixed(2)} / 10.0`;
+        gpaElement.style.background = 'linear-gradient(135deg, #87CEFA 0%, #4682B4 100%)';
+      }
+      
+      return { gpa: parseFloat(gpa.toFixed(2)), credits: totalCredits };
+    }
+
+    function calculateCGPA() {
+      let totalPoints = 0, totalCredits = 0;
+      let semesterData = [];
+      
+      for (let sem = 1; sem <= semesterCount; sem++) {
+        const semesterElement = document.getElementById(`semester-${sem}`);
+        if (semesterElement) {
+          const { gpa, credits } = calculateGPA(sem);
+          if (credits > 0) {
+            totalPoints += gpa * credits;
+            totalCredits += credits;
+            semesterData.push({ sem, gpa, credits });
+          }
+        }
+      }
+      
+      const cgpaElement = document.getElementById("cgpaResult");
+      const headerCGPA = document.getElementById("headerCGPA");
+      
+      if (totalCredits === 0) {
+        cgpaElement.innerHTML = '⚠️ Please add Semester to calculate CGPA';
+        cgpaElement.style.background = 'linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%)';
+        cgpaElement.style.display = 'block';
+        
+        headerCGPA.innerHTML = '🎯 Overall CGPA: Not calculated yet';
+        headerCGPA.style.display = 'none';
+        return;
+      }
+      
+      const cgpa = (totalPoints / totalCredits);
+      const percentage = (cgpa * 10);
+      
+      cgpaElement.innerHTML = `
+        🎯 <strong>Overall CGPA: ${cgpa.toFixed(2)} / 10.0</strong><br>
+        <span style="font-size: 0.8em; opacity: 0.9;">
+          Equivalent Percentage: ${percentage.toFixed(1)}% | Total Credits: ${totalCredits}
+        </span>
+      `;
+      cgpaElement.style.background = 'linear-gradient(135deg, #4682B4 0%, #1E90FF 100%)';
+      cgpaElement.style.display = 'block';
+      
+      // Update header CGPA display
+      headerCGPA.innerHTML = `🎯 Overall CGPA: ${cgpa.toFixed(2)} / 10.0 (${percentage.toFixed(1)}%)`;
+      headerCGPA.style.display = 'block';
+    }
+
+    // Auto-calculate CGPA when page loads with data
+    window.addEventListener('load', function() {
+      setTimeout(calculateCGPA, 100);
+    });
+  </script>
+</body>
+</html>
