@@ -195,6 +195,7 @@
       box-shadow: 0 5px 15px rgba(70, 130, 180, 0.3);
     }
 
+    /* Desktop table - default visible */
     .course-table {
       width: 100%;
       border-collapse: collapse;
@@ -202,6 +203,7 @@
       border-radius: 15px;
       overflow: hidden;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      display: table;
     }
 
     .course-table th {
@@ -222,6 +224,59 @@
 
     .course-table tr:hover td {
       background: #f0f8ff;
+    }
+
+    /* Mobile list - default hidden */
+    .mobile-course-list {
+      display: none;
+    }
+
+    .mobile-course-item {
+      background: white;
+      border: 2px solid #f0f0f0;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .mobile-course-item:hover {
+      border-color: #4682B4;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .mobile-course-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .mobile-course-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .mobile-course-label {
+      font-weight: 700;
+      color: #4682B4;
+      font-size: 14px;
+      min-width: 80px;
+    }
+
+    .mobile-course-value {
+      flex: 1;
+      text-align: right;
+    }
+
+    .mobile-course-name {
+      margin-bottom: 15px;
+    }
+
+    .mobile-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
     }
 
     .course-name-input {
@@ -363,8 +418,8 @@
       font-weight: 600;
     }
 
-    /* Mobile Responsive */
-    @media (max-width: 768px) {
+    /* Mobile Responsive Styles */
+    @media screen and (max-width: 768px) {
       body {
         padding: 5px;
       }
@@ -439,80 +494,18 @@
         font-size: 15px;
       }
       
-      /* Mobile table styling - Card layout */
+      /* Hide desktop table on mobile */
       .course-table {
-        display: none;
+        display: none !important;
       }
 
+      /* Show mobile list on mobile */
       .mobile-course-list {
-        display: block;
-      }
-
-      .mobile-course-item {
-        background: white;
-        border: 2px solid #f0f0f0;
-        border-radius: 15px;
-        padding: 20px;
-        margin-bottom: 15px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-      }
-
-      .mobile-course-item:hover {
-        border-color: #4682B4;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-      }
-
-      .mobile-course-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-      }
-
-      .mobile-course-row:last-child {
-        margin-bottom: 0;
+        display: block !important;
       }
 
       .mobile-course-label {
-        font-weight: 700;
-        color: #4682B4;
-        font-size: 14px;
         min-width: 70px;
-      }
-
-      .mobile-course-value {
-        flex: 1;
-        text-align: right;
-      }
-
-      .mobile-course-name {
-        margin-bottom: 15px;
-      }
-
-      .mobile-course-name .course-name-input {
-        font-size: 16px;
-        padding: 12px;
-      }
-
-      .mobile-actions {
-        display: flex;
-        justify-content: center;
-        margin-top: 15px;
-      }
-
-      .grade-legend {
-        gap: 8px;
-        margin-bottom: 25px;
-      }
-
-      .grade-item {
-        padding: 8px 12px;
-        font-size: 12px;
-      }
-
-      .cgpa-result {
-        font-size: 1.2em;
-        padding: 20px 15px;
       }
 
       .semester-card {
@@ -544,12 +537,25 @@
 
       .points-cell {
         font-size: 15px;
-        font-weight: 700;
-        color: #4682B4;
+      }
+
+      .grade-legend {
+        gap: 8px;
+        margin-bottom: 25px;
+      }
+
+      .grade-item {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+
+      .cgpa-result {
+        font-size: 1.2em;
+        padding: 20px 15px;
       }
     }
 
-    @media (max-width: 480px) {
+    @media screen and (max-width: 480px) {
       body {
         padding: 3px;
       }
@@ -608,17 +614,6 @@
 
       .footer p {
         font-size: 12px;
-      }
-    }
-
-    /* Desktop table display */
-    @media (min-width: 769px) {
-      .mobile-course-list {
-        display: none;
-      }
-      
-      .course-table {
-        display: table;
       }
     }
   </style>
@@ -792,16 +787,54 @@
         </div>
       `;
       mobileList.appendChild(mobileItem);
+
+      // Sync the data between desktop and mobile views
+      syncCourseData(sem);
+    }
+
+    function syncCourseData(sem) {
+      const table = document.getElementById(`table-${sem}`).getElementsByTagName('tbody')[0];
+      const mobileList = document.getElementById(`mobile-list-${sem}`);
+      
+      // Sync from table to mobile
+      for (let i = 0; i < table.rows.length; i++) {
+        const row = table.rows[i];
+        const mobileItem = mobileList.children[i];
+        
+        if (mobileItem) {
+          // Get data from table
+          const courseName = row.cells[0].querySelector('.course-name-input').value;
+          const credits = row.cells[1].querySelector('.course-input').value;
+          const grade = row.cells[2].querySelector('.grade-select').value;
+          
+          // Update mobile item
+          mobileItem.querySelector('.course-name-input').value = courseName;
+          mobileItem.querySelector('.course-input').value = credits;
+          mobileItem.querySelector('.grade-select').value = grade;
+          mobileItem.querySelector('.points-cell').textContent = gradePoints[grade].toFixed(1);
+        }
+      }
     }
 
     function adjustCredit(button, adjustment, sem) {
       const creditInput = button.parentNode.querySelector('.course-input');
       adjustCreditValue(creditInput, adjustment, sem);
+      syncCourseData(sem);
     }
 
     function adjustCreditMobile(button, adjustment, sem) {
       const creditInput = button.parentNode.querySelector('.course-input');
       adjustCreditValue(creditInput, adjustment, sem);
+      
+      // Also update the corresponding desktop row
+      const mobileItem = button.closest('.mobile-course-item');
+      const mobileList = document.getElementById(`mobile-list-${sem}`);
+      const itemIndex = Array.from(mobileList.children).indexOf(mobileItem);
+      const table = document.getElementById(`table-${sem}`).getElementsByTagName('tbody')[0];
+      
+      if (table.rows[itemIndex]) {
+        table.rows[itemIndex].cells[1].querySelector('.course-input').value = creditInput.value;
+      }
     }
 
     function adjustCreditValue(creditInput, adjustment, sem) {
@@ -820,12 +853,34 @@
       const grade = selectElement.value;
       const pointsCell = selectElement.closest('tr').querySelector('.points-cell');
       pointsCell.textContent = gradePoints[grade].toFixed(1);
+      
+      // Also update mobile view
+      const sem = extractSemesterNumber(selectElement);
+      syncCourseData(sem);
     }
 
     function updatePointsMobile(selectElement) {
       const grade = selectElement.value;
       const pointsCell = selectElement.closest('.mobile-course-item').querySelector('.points-cell');
       pointsCell.textContent = gradePoints[grade].toFixed(1);
+      
+      // Also update desktop view
+      const mobileItem = selectElement.closest('.mobile-course-item');
+      const mobileList = mobileItem.parentNode;
+      const itemIndex = Array.from(mobileList.children).indexOf(mobileItem);
+      const sem = extractSemesterNumber(selectElement);
+      const table = document.getElementById(`table-${sem}`).getElementsByTagName('tbody')[0];
+      
+      if (table.rows[itemIndex]) {
+        table.rows[itemIndex].cells[2].querySelector('.grade-select').value = grade;
+        table.rows[itemIndex].cells[3].textContent = gradePoints[grade].toFixed(1);
+      }
+    }
+
+    function extractSemesterNumber(element) {
+      // Extract semester number from the element's context
+      const semesterCard = element.closest('.semester-card');
+      return parseInt(semesterCard.id.split('-')[1]);
     }
 
     function removeCourse(button, sem) {
@@ -902,11 +957,11 @@
         gpaElement.textContent = 'GPA: Add courses first';
         gpaElement.style.background = 'linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%)';
       } else {
-        gpaElement.textContent = `GPA: ${gpa.toFixed(2)} / 10.0`;
+        gpaElement.textContent = `GPA: ${gpa.toFixed(3)} / 10.0`;
         gpaElement.style.background = 'linear-gradient(135deg, #87CEFA 0%, #4682B4 100%)';
       }
       
-      return { gpa: parseFloat(gpa.toFixed(2)), credits: totalCredits };
+      return { gpa: parseFloat(gpa.toFixed(3)), credits: totalCredits };
     }
 
     function calculateCGPA() {
@@ -944,14 +999,14 @@
       cgpaElement.innerHTML = `
         🎯 <strong>Overall CGPA: ${cgpa.toFixed(2)} / 10.0</strong><br>
         <span style="font-size: 0.8em; opacity: 0.9;">
-          Equivalent Percentage: ${percentage.toFixed(1)}% | Total Credits: ${totalCredits}
+          Equivalent Percentage: ${percentage.toFixed(2)}% | Total Credits: ${totalCredits}
         </span>
       `;
       cgpaElement.style.background = 'linear-gradient(135deg, #4682B4 0%, #1E90FF 100%)';
       cgpaElement.style.display = 'block';
       
       // Update header CGPA display
-      headerCGPA.innerHTML = `🎯 Overall CGPA: ${cgpa.toFixed(2)} / 10.0 (${percentage.toFixed(1)}%)`;
+      headerCGPA.innerHTML = `🎯 Overall CGPA: ${cgpa.toFixed(2)} / 10.0 (${percentage.toFixed(2)}%)`;
       headerCGPA.style.display = 'block';
     }
 
@@ -959,6 +1014,43 @@
     window.addEventListener('load', function() {
       setTimeout(calculateCGPA, 100);
     });
+
+    // Add event listeners to sync data between desktop and mobile views
+    document.addEventListener('input', function(e) {
+      if (e.target.classList.contains('course-name-input')) {
+        const sem = extractSemesterNumber(e.target);
+        if (sem) {
+          syncCourseNames(sem, e.target);
+        }
+      }
+    });
+
+    function syncCourseNames(sem, changedInput) {
+      const isMobile = changedInput.closest('.mobile-course-item') !== null;
+      const newValue = changedInput.value;
+      
+      if (isMobile) {
+        // Update corresponding desktop input
+        const mobileItem = changedInput.closest('.mobile-course-item');
+        const mobileList = document.getElementById(`mobile-list-${sem}`);
+        const itemIndex = Array.from(mobileList.children).indexOf(mobileItem);
+        const table = document.getElementById(`table-${sem}`).getElementsByTagName('tbody')[0];
+        
+        if (table.rows[itemIndex]) {
+          table.rows[itemIndex].cells[0].querySelector('.course-name-input').value = newValue;
+        }
+      } else {
+        // Update corresponding mobile input
+        const row = changedInput.closest('tr');
+        const table = row.parentNode.parentNode;
+        const rowIndex = row.rowIndex - 1;
+        const mobileList = document.getElementById(`mobile-list-${sem}`);
+        
+        if (mobileList.children[rowIndex]) {
+          mobileList.children[rowIndex].querySelector('.course-name-input').value = newValue;
+        }
+      }
+    }
   </script>
 </body>
 </html>
